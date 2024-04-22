@@ -1,0 +1,80 @@
+name: car_new
+definition:
+  # Wires connect to data in collections
+  wires:
+    car:
+      collection: demo/cars4sale.car
+      fields:
+        demo/cars4sale.body_type:
+        demo/cars4sale.color:
+        demo/cars4sale.fuel_type:
+        demo/cars4sale.is_new:
+        demo/cars4sale.make:
+        demo/cars4sale.mileage:
+        demo/cars4sale.model:
+        demo/cars4sale.price:
+        demo/cars4sale.status:
+        demo/cars4sale.transmission:
+        demo/cars4sale.year:
+      init:
+        create: true
+        query: false
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - demo/cars4sale.nav:
+        content:
+          - uesio/io.list:
+              wire: car
+              uesio.id: carList
+              mode: EDIT
+              components:
+                - uesio/io.titlebar:
+                    title: Create a new $Collection{label}
+                    subtitle: $RecordMeta{name}
+                    uesio.variant: uesio/io.main
+                    actions:
+                      - uesio/io.group:
+                          components:
+                            - uesio/io.button:
+                                signals:
+                                  - signal: wire/SAVE
+                                    wires:
+                                      - car
+                                  - signal: route/NAVIGATE_TO_ASSIGNMENT
+                                    collection: demo/cars4sale.car
+                                text: Create
+                                hotkey: "meta+s"
+                                uesio.variant: uesio/io.secondary
+                            - uesio/io.button:
+                                signals:
+                                  - signal: wire/CANCEL
+                                    wire: car
+                                text: Reset
+                                uesio.variant: uesio/io.secondary
+                - uesio/io.box:
+                    uesio.variant: uesio/io.section
+                    components:
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.body_type
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.color
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.fuel_type
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.is_new
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.make
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.mileage
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.model
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.price
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.status
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.transmission
+                      - uesio/io.field:
+                          fieldId: demo/cars4sale.year

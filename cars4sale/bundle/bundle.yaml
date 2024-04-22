@@ -1,0 +1,11 @@
+name: demo/cars4sale
+homeRoute: demo/cars4sale.home
+publicProfile: demo/cars4sale.car_public
+favicon: uesio/core.logo
+dependencies:
+  uesio/builder:
+    version: v0.0.1
+  uesio/core:
+    version: v0.0.1
+  uesio/io:
+    version: v0.0.1

@@ -1,0 +1,3 @@
+name: car_public
+permissionSets:
+  - demo/cars4sale.car_public_pem

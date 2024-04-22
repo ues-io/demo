@@ -1,0 +1,5 @@
+name: cardetail
+path: car/detail/{recordid}
+view: car_detail
+theme: uesio/core.default
+title: car Detail View

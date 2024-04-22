@@ -1,0 +1,5 @@
+name: carnew
+path: carnew
+view: car_new
+theme: uesio/core.default
+title: car Create New View

@@ -1,0 +1,5 @@
+name: carlist
+path: car
+view: car_list
+theme: uesio/core.default
+title: car List View

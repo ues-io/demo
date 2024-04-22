@@ -1,0 +1,5 @@
+name: carconsole
+path: carconsole
+view: car_console
+theme: uesio/core.default
+title: car Console View

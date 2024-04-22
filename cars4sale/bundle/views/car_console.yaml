@@ -1,0 +1,50 @@
+name: car_console
+definition:
+  # Wires connect to data in collections
+  wires:
+    car:
+      collection: demo/cars4sale.car
+      fields:
+        demo/cars4sale.body_type:
+        demo/cars4sale.color:
+        demo/cars4sale.fuel_type:
+        demo/cars4sale.is_new:
+        demo/cars4sale.make:
+        demo/cars4sale.mileage:
+        demo/cars4sale.model:
+        demo/cars4sale.price:
+        demo/cars4sale.status:
+        demo/cars4sale.transmission:
+        demo/cars4sale.year:
+  # Components determine the layout and composition of your view
+  # Wires connect to data in collections
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - demo/cars4sale.nav:
+              extra:
+                - uesio/io.box:
+                    components:
+                      - uesio/io.list:
+                          wire: car
+                          components:
+                            - uesio/io.tile:
+                                uesio.variant: uesio/io.item
+                                content:
+                                  - uesio/io.text:
+                                      text: $RecordMeta{name}
+                                      element: div
+                                signals:
+                                  - signal: component/CALL
+                                    component: uesio/core.view
+                                    componentsignal: SET_PARAM
+                                    targettype: specific
+                                    target: detailview
+                                    param: recordid
+                                    value: ${uesio/core.id}
+        content:
+          - uesio/core.view:
+              uesio.id: detailview
+              view: car_detail_content
+              params:
+                recordid: ""

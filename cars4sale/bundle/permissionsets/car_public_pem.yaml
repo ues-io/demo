@@ -1,0 +1,16 @@
+name: car_public_pem
+named: {}
+views: {}
+collections: {}
+routes: {}
+files: {}
+bots: {}
+integrationActions: {}
+allowallbots: true
+allowallcollections: true
+allowallviews: true
+allowallroutes: true
+allowallfiles: true
+allowallintegrationactions: false
+modifyallrecords: true
+viewallrecords: true
