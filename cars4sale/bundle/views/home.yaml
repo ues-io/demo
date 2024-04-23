@@ -120,84 +120,71 @@ definition:
                   - bg-blue-50
                   - h-screen
         header:
-          - uesio/io.box:
-              components:
-                - uesio/io.group:
-                    columnGap: 10px
-                    components:
-                      - uesio/io.image:
-                          loading: lazy
-                          file: demo/cars4sale.logo
-                          height: 90
+          - uesio/io.viewheader:
+              uesio.variant: uesio/io.default
+              logo:
+                - uesio/io.image:
+                    loading: lazy
+                    file: demo/cars4sale.logo
+                    height: 90
+              left:
+                - uesio/io.searchbox:
+                    wire: carlist
+                    searchFields:
+                      - demo/cars4sale.model
+                      - demo/cars4sale.price
+                    placeholder: Make & Price Search
+                    focusOnRender: true
+                    uesio.styleTokens:
+                      root:
+                        - pl-8
+                        - pr-40
+              center:
+                - uesio/io.grid:
+                    items:
                       - uesio/io.text:
-                          text: Cars4Sale
+                          text: New Cars
                           element: div
                           align: left
                           color: red
                           uesio.styleTokens:
                             root:
-                              - text-xl
-                      - uesio/io.group:
-                          columnGap: 10px
-                          alignItems: end
-                          justifyContent: end
-                          components:
-                            - uesio/io.searchbox:
-                                wire: carlist
-                                searchFields:
-                                  - demo/cars4sale.model
-                                  - demo/cars4sale.price
-                                placeholder: Make & Price Search
-                                focusOnRender: true
-                                uesio.styleTokens:
-                                  root:
-                                    - pl-8
-                                    - pr-40
-                            - uesio/io.text:
-                                text: New Cars
-                                element: div
-                                align: left
-                                color: red
-                                uesio.styleTokens:
-                                  root:
-                                    - pl-8
-                                    - hover:text-white
-                            - uesio/io.text:
-                                text: Used Cars
-                                element: div
-                                align: left
-                                color: red
-                                uesio.styleTokens:
-                                  root:
-                                    - pl-8
-                                    - hover:text-white
-                            - uesio/io.text:
-                                text: Private Sellers
-                                element: div
-                                align: left
-                                color: red
-                                uesio.styleTokens:
-                                  root:
-                                    - pl-8
-                                    - hover:text-white
-                            - uesio/io.text:
-                                text: Instant Cash Offer
-                                element: div
-                                align: left
-                                color: red
-                                uesio.styleTokens:
-                                  root:
-                                    - pl-8
-                                    - hover:text-white
+                              - pl-8
+                              - hover:text-white
+                      - uesio/io.text:
+                          text: Used Cars
+                          element: div
+                          align: left
+                          color: red
                           uesio.styleTokens:
                             root:
-                              - pl-15
-                              - ml-10
-                    alignItems: center
-                    justifyContent: space-between
+                              - pl-8
+                              - hover:text-white
+                      - uesio/io.text:
+                          text: Private Sellers
+                          element: div
+                          align: left
+                          color: red
+                          uesio.styleTokens:
+                            root:
+                              - pl-8
+                              - hover:text-white
+                      - uesio/io.text:
+                          text: Instant Cash Offer
+                          element: div
+                          align: left
+                          color: red
+                          uesio.styleTokens:
+                            root:
+                              - pl-8
+                              - hover:text-white
+                    uesio.variant: uesio/io.four_columns
                     uesio.styleTokens:
                       root:
-                        - bg-black
+                        - pt-4
+              uesio.styleTokens:
+                root:
+                  - bg-black
   panels:
     more_info:
       uesio.type: uesio/io.dialog
