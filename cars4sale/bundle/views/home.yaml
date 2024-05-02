@@ -9,6 +9,13 @@ definition:
         demo/cars4sale.year: {}
         demo/cars4sale.price: {}
         demo/cars4sale.image: {}
+        demo/cars4sale.body_type: {}
+        demo/cars4sale.color: {}
+        demo/cars4sale.fuel_type: {}
+        demo/cars4sale.is_new: {}
+        demo/cars4sale.mileage: {}
+        demo/cars4sale.status: {}
+        demo/cars4sale.transmission: {}
       collection: demo/cars4sale.car
       batchsize: 200
       init:
@@ -26,9 +33,8 @@ definition:
                 - uesio/io.box:
                     uesio.variant: ""
                     components:
-                      - uesio/io.grid:
-                          uesio.variant: uesio/io.two_columns
-                          items:
+                      - uesio/io.box:
+                          components:
                             - uesio/io.image:
                                 loading: lazy
                                 src: $UserFile{demo/cars4sale.image}
@@ -38,34 +44,23 @@ definition:
                                   root:
                                     - align-middle
                                     - hover:scale-125
-                            - uesio/io.field:
-                                fieldId: demo/cars4sale.make
-                                labelPosition: none
-                                placeholder: ""
-                                readonly: false
-                                displayAs: ""
+                                    - max-h-36
+                      - uesio/io.box:
+                          components:
+                            - uesio/io.grid:
+                                uesio.variant: uesio/io.one_column
+                                items:
+                                  - uesio/io.text:
+                                      text: ${demo/cars4sale.make} ${demo/cars4sale.model}
+                                      element: div
+                                      align: left
+                                  - uesio/io.text:
+                                      text: "${demo/cars4sale.body_type}, ${demo/cars4sale.transmission}, ${demo/cars4sale.color}, ${demo/cars4sale.mileage} miles"
+                                      element: div
+                                      align: left
                                 uesio.styleTokens:
-                                  readonly: []
-                                  input:
-                                    - text-2xl
-                                    - text-center
-                                    - shadow-lg
-                                uesio.variant: ""
-                            - uesio/io.field:
-                                fieldId: demo/cars4sale.model
-                                labelPosition: none
-                                uesio.styleTokens:
-                                  input:
-                                    - shadow-inner
-                            - uesio/io.field:
-                                fieldId: demo/cars4sale.year
-                                uesio.styleTokens:
-                                  input:
-                                    - shadow-inner
-                                labelPosition: none
-                          uesio.styleTokens:
-                            root:
-                              - align-middle
+                                  root:
+                                    - align-middle
                       - uesio/io.grid:
                           uesio.variant: uesio/io.two_columns
                           items:
@@ -76,8 +71,9 @@ definition:
                                       uesio.styleTokens:
                                         input: []
                                         readonly: []
-                                      labelPosition: left
+                                      labelPosition: top
                                       uesio.variant: ""
+                                      label: Total Price
                                 uesio.styleTokens:
                                   root:
                                     - text-xl
@@ -85,7 +81,7 @@ definition:
                             - uesio/io.button:
                                 text: Details
                                 icon: more_up
-                                uesio.variant: uesio/io.nav
+                                uesio.variant: uesio/builder.buildtitle
                                 iconPlacement: start
                                 signals:
                                   - signal: panel/OPEN
@@ -98,6 +94,35 @@ definition:
                               - bg-gray-100
                               - p-3
                               - shadow-inner
+                      - uesio/io.box:
+                          components:
+                            - uesio/io.grid:
+                                uesio.variant: uesio/io.two_columns
+                                items:
+                                  - uesio/io.button:
+                                      text: reserve now
+                                      icon: ""
+                                      uesio.variant: uesio/io.primary
+                                      iconPlacement: start
+                                      uesio.styleTokens:
+                                        root:
+                                          - flex
+                                          - flex-col
+                                          - bg-green-900
+                                  - uesio/io.button:
+                                      text: Apply for finance
+                                      icon: ""
+                                      uesio.variant: uesio/io.primary
+                                      iconPlacement: start
+                                      uesio.styleTokens:
+                                        root:
+                                          - flex
+                                          - flex-col
+                                          - to-blue-500
+                                          - bg-blue-700
+                          uesio.styleTokens:
+                            root:
+                              - pt-2
                     uesio.styleTokens:
                       root:
                         - border
@@ -113,12 +138,6 @@ definition:
                 root:
                   - p-8
                   - border
-          - uesio/io.box:
-              components: []
-              uesio.styleTokens:
-                root:
-                  - bg-blue-50
-                  - h-screen
         header:
           - uesio/io.viewheader:
               uesio.variant: uesio/io.default
@@ -185,6 +204,8 @@ definition:
               uesio.styleTokens:
                 root:
                   - bg-black
+        left:
+          - uesio/io.box: {}
   panels:
     more_info:
       uesio.type: uesio/io.dialog
