@@ -21,6 +21,13 @@ definition:
       init:
         query: true
         create: false
+      conditions:
+        - id: isnew
+          field: demo/cars4sale.is_new
+          operator: EQ
+          valueSource: VALUE
+          inactive: true
+          value: true
   # Components determine the layout and composition of your view
   components:
     - uesio/io.viewlayout:
@@ -35,16 +42,19 @@ definition:
                     components:
                       - uesio/io.box:
                           components:
-                            - uesio/io.image:
-                                loading: lazy
-                                src: $UserFile{demo/cars4sale.image}
-                                file: ""
-                                uesio.variant: ""
-                                uesio.styleTokens:
-                                  root:
-                                    - align-middle
-                                    - hover:scale-125
-                                    - max-h-36
+                            - uesio/io.grid:
+                                items:
+                                  - uesio/io.image:
+                                      loading: lazy
+                                      src: $UserFile{demo/cars4sale.image}
+                                      file: ""
+                                      uesio.variant: ""
+                                      uesio.styleTokens:
+                                        root:
+                                          - align-middle
+                                          - hover:scale-125
+                                          - max-h-36
+                                uesio.variant: uesio/io.center
                       - uesio/io.box:
                           components:
                             - uesio/io.grid:
@@ -54,6 +64,9 @@ definition:
                                       text: ${demo/cars4sale.make} ${demo/cars4sale.model}
                                       element: div
                                       align: left
+                                      uesio.styleTokens:
+                                        root:
+                                          - text-2xl
                                   - uesio/io.text:
                                       text: "${demo/cars4sale.body_type}, ${demo/cars4sale.transmission}, ${demo/cars4sale.color}, ${demo/cars4sale.mileage} miles"
                                       element: div
@@ -132,13 +145,29 @@ definition:
                         - shadow
                         - m-2
                         - hover:scale-y-110
-                        - hover:shadow-lg
+                        - hover:shadow-2xl
+                        - focus:ring-4
+                        - focus-within:ring-1
               wire: carlist
               uesio.styleTokens:
                 root:
                   - p-8
                   - border
         header:
+          - uesio/io.box:
+              components:
+                - uesio/io.text:
+                    text: Used Car Dealer of the Year 2024
+                    element: div
+                    align: center
+                    color: white
+                    uesio.variant: ""
+                    uesio.styleTokens:
+                      root:
+                        - p-1
+                        - bg-blue-700
+              uesio.styleTokens:
+                root: []
           - uesio/io.viewheader:
               uesio.variant: uesio/io.default
               logo:
@@ -146,50 +175,60 @@ definition:
                     loading: lazy
                     file: demo/cars4sale.logo
                     height: 90
-              left:
-                - uesio/io.searchbox:
-                    wire: carlist
-                    searchFields:
-                      - demo/cars4sale.model
-                      - demo/cars4sale.price
-                    placeholder: Make & Price Search
-                    focusOnRender: true
-                    uesio.styleTokens:
-                      root:
-                        - pl-8
-                        - pr-40
+              left: []
               center:
                 - uesio/io.grid:
                     items:
-                      - uesio/io.text:
+                      - uesio/io.button:
                           text: New Cars
-                          element: div
-                          align: left
-                          color: red
+                          icon: ""
+                          uesio.variant: uesio/io.default
+                          iconPlacement: start
                           uesio.styleTokens:
                             root:
-                              - pl-8
+                              - text-red-500
+                              - text-xl
+                              - hover:scale-110
                               - hover:text-white
-                      - uesio/io.text:
+                          signals:
+                            - signal: wire/TOGGLE_CONDITION
+                              wire: carlist
+                              conditionId: isnew
+                              value: "true"
+                      - uesio/io.button:
                           text: Used Cars
-                          element: div
-                          align: left
-                          color: red
+                          icon: ""
+                          uesio.variant: uesio/io.default
+                          iconPlacement: start
                           uesio.styleTokens:
                             root:
-                              - pl-8
+                              - text-red-500
+                              - text-xl
+                              - hover:scale-110
                               - hover:text-white
+                          signals:
+                            - signal: wire/TOGGLE_CONDITION
+                              wire: carlist
+                              conditionId: isnew
+                              value: "true"
+                      - uesio/io.button:
+                          text: Any Cars
+                          icon: ""
+                          uesio.variant: uesio/io.default
+                          iconPlacement: start
+                          uesio.styleTokens:
+                            root:
+                              - text-red-500
+                              - text-xl
+                              - hover:scale-110
+                              - hover:text-white
+                          signals:
+                            - signal: wire/TOGGLE_CONDITION
+                              wire: carlist
+                              conditionId: isnew
+                              value: "true"
                       - uesio/io.text:
                           text: Private Sellers
-                          element: div
-                          align: left
-                          color: red
-                          uesio.styleTokens:
-                            root:
-                              - pl-8
-                              - hover:text-white
-                      - uesio/io.text:
-                          text: Instant Cash Offer
                           element: div
                           align: left
                           color: red
@@ -204,8 +243,115 @@ definition:
               uesio.styleTokens:
                 root:
                   - bg-black
+              right:
+                - uesio/io.text:
+                    text: "OPEN TODAY: 10am - 10pm"
+                    element: pre
+                    align: left
+                    color: white
+                    uesio.variant: ""
         left:
-          - uesio/io.box: {}
+          - uesio/io.box:
+              components:
+                - uesio/io.box:
+                    components:
+                      - uesio/io.text:
+                          text: SEARCH
+                          element: div
+                          align: center
+                          color: black
+                          uesio.styleTokens:
+                            root:
+                              - font-extrabold
+                    uesio.variant: uesio/io.section
+                    uesio.styleTokens:
+                      root: []
+                - uesio/io.grid:
+                    uesio.variant: uesio/io.one_column
+                    items:
+                      - uesio/io.accordion:
+                          uesio.variant: ""
+                          title: MAKE
+                          subtitle: null
+                          expandicon: expand_more
+                          collapseicon: expand_less
+                          expanded: false
+                          components:
+                            - uesio/io.searchbox:
+                                wire: carlist
+                                searchFields:
+                                  - demo/cars4sale.make
+                                uesio.styleTokens:
+                                  root:
+                                    - float-right
+                                focusOnRender: true
+                          uesio.styleTokens:
+                            root:
+                              - border-0
+                              - border-t
+                      - uesio/io.accordion:
+                          uesio.variant: ""
+                          title: MODEL
+                          subtitle: null
+                          expandicon: expand_more
+                          collapseicon: expand_less
+                          expanded: false
+                          components:
+                            - uesio/io.searchbox:
+                                wire: carlist
+                                uesio.styleTokens:
+                                  root:
+                                    - float-right
+                                focusOnRender: true
+                                searchFields:
+                                  - demo/cars4sale.model
+                          uesio.styleTokens:
+                            root:
+                              - border-0
+                              - border-t
+                      - uesio/io.accordion:
+                          uesio.variant: ""
+                          title: PRICE
+                          subtitle: null
+                          expandicon: expand_more
+                          collapseicon: expand_less
+                          expanded: false
+                          components:
+                            - uesio/io.searchbox:
+                                wire: carlist
+                                uesio.styleTokens:
+                                  root:
+                                    - float-right
+                                focusOnRender: true
+                                searchFields:
+                                  - demo/cars4sale.price
+                          uesio.styleTokens:
+                            root:
+                              - border-0
+                              - border-t
+                      - uesio/io.accordion:
+                          uesio.variant: ""
+                          title: MILEAGE
+                          subtitle: null
+                          expandicon: expand_more
+                          collapseicon: expand_less
+                          expanded: false
+                          components:
+                            - uesio/io.searchbox:
+                                wire: carlist
+                                uesio.styleTokens:
+                                  root:
+                                    - float-right
+                                searchFields:
+                                  - demo/cars4sale.mileage
+                                focusOnRender: true
+                          uesio.styleTokens:
+                            root:
+                              - border-0
+                              - border-t
+              uesio.styleTokens:
+                root:
+                  - p-8
   panels:
     more_info:
       uesio.type: uesio/io.dialog
