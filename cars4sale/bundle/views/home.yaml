@@ -28,6 +28,9 @@ definition:
           valueSource: VALUE
           inactive: true
           value: true
+      order:
+        - desc: false
+          field: demo/cars4sale.make
   # Components determine the layout and composition of your view
   components:
     - uesio/io.viewlayout:
@@ -123,7 +126,7 @@ definition:
                                           - flex-col
                                           - bg-green-900
                                   - uesio/io.button:
-                                      text: Apply for finance
+                                      text: Finance
                                       icon: ""
                                       uesio.variant: uesio/io.primary
                                       iconPlacement: start
@@ -349,6 +352,14 @@ definition:
                             root:
                               - border-0
                               - border-t
+                      - uesio/io.filter:
+                          wire: carlist
+                          conditionId: isnew
+                          displayAs: TOGGLE
+                          labelPosition: top
+                          label: IS NEW
+                          uesio.styleTokens:
+                            root: []
               uesio.styleTokens:
                 root:
                   - p-8
