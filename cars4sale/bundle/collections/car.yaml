@@ -1,4 +1,4 @@
 name: car
 label: car
 pluralLabel: cars
-nameField: make
+nameField: model

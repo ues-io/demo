@@ -4,7 +4,6 @@ definition:
   wires:
     carlist:
       fields:
-        demo/cars4sale.make: {}
         demo/cars4sale.model: {}
         demo/cars4sale.year: {}
         demo/cars4sale.price: {}
@@ -16,6 +15,7 @@ definition:
         demo/cars4sale.mileage: {}
         demo/cars4sale.status: {}
         demo/cars4sale.transmission: {}
+        demo/cars4sale.manufacturer: {}
       collection: demo/cars4sale.car
       batchsize: 200
       init:
@@ -64,7 +64,7 @@ definition:
                                 uesio.variant: uesio/io.one_column
                                 items:
                                   - uesio/io.text:
-                                      text: ${demo/cars4sale.make} ${demo/cars4sale.model}
+                                      text: ${demo/cars4sale.manufacturer->demo/cars4sale.make} ${demo/cars4sale.model}
                                       element: div
                                       align: left
                                       uesio.styleTokens:
@@ -178,6 +178,9 @@ definition:
                     loading: lazy
                     file: demo/cars4sale.logo
                     height: 90
+                    signals:
+                      - signal: route/NAVIGATE_TO_ROUTE
+                        route: demo/cars4sale.carlist
               left: []
               center:
                 - uesio/io.grid:
@@ -194,10 +197,15 @@ definition:
                               - hover:scale-110
                               - hover:text-white
                           signals:
-                            - signal: wire/TOGGLE_CONDITION
+                            - signal: wire/RESET
+                              wire: carlist
+                            - signal: wire/SET_CONDITION_VALUE
                               wire: carlist
                               conditionId: isnew
                               value: "true"
+                            - signal: wire/LOAD
+                              wires:
+                                - carlist
                       - uesio/io.button:
                           text: Used Cars
                           icon: ""
@@ -210,10 +218,15 @@ definition:
                               - hover:scale-110
                               - hover:text-white
                           signals:
-                            - signal: wire/TOGGLE_CONDITION
+                            - signal: wire/RESET
+                              wire: carlist
+                            - signal: wire/SET_CONDITION_VALUE
                               wire: carlist
                               conditionId: isnew
-                              value: "true"
+                              value: "false"
+                            - signal: wire/LOAD
+                              wires:
+                                - carlist
                       - uesio/io.button:
                           text: Any Cars
                           icon: ""
@@ -226,10 +239,13 @@ definition:
                               - hover:scale-110
                               - hover:text-white
                           signals:
-                            - signal: wire/TOGGLE_CONDITION
+                            - signal: wire/RESET_CONDITIONS
                               wire: carlist
                               conditionId: isnew
                               value: "true"
+                            - signal: wire/LOAD
+                              wires:
+                                - carlist
                       - uesio/io.text:
                           text: Private Sellers
                           element: div
@@ -280,14 +296,9 @@ definition:
                           collapseicon: expand_less
                           expanded: false
                           components:
-                            - uesio/io.searchbox:
+                            - uesio/io.filter:
                                 wire: carlist
-                                searchFields:
-                                  - demo/cars4sale.make
-                                uesio.styleTokens:
-                                  root:
-                                    - float-right
-                                focusOnRender: true
+                                fieldId: demo/cars4sale.manufacturer
                           uesio.styleTokens:
                             root:
                               - border-0
@@ -314,6 +325,21 @@ definition:
                               - border-t
                       - uesio/io.accordion:
                           uesio.variant: ""
+                          title: DRIVE
+                          subtitle: null
+                          expandicon: expand_more
+                          collapseicon: expand_less
+                          expanded: false
+                          components:
+                            - uesio/io.filter:
+                                wire: carlist
+                                fieldId: demo/cars4sale.transmission
+                          uesio.styleTokens:
+                            root:
+                              - border-0
+                              - border-t
+                      - uesio/io.accordion:
+                          uesio.variant: ""
                           title: PRICE
                           subtitle: null
                           expandicon: expand_more
@@ -332,34 +358,6 @@ definition:
                             root:
                               - border-0
                               - border-t
-                      - uesio/io.accordion:
-                          uesio.variant: ""
-                          title: MILEAGE
-                          subtitle: null
-                          expandicon: expand_more
-                          collapseicon: expand_less
-                          expanded: false
-                          components:
-                            - uesio/io.searchbox:
-                                wire: carlist
-                                uesio.styleTokens:
-                                  root:
-                                    - float-right
-                                searchFields:
-                                  - demo/cars4sale.mileage
-                                focusOnRender: true
-                          uesio.styleTokens:
-                            root:
-                              - border-0
-                              - border-t
-                      - uesio/io.filter:
-                          wire: carlist
-                          conditionId: isnew
-                          displayAs: TOGGLE
-                          labelPosition: top
-                          label: IS NEW
-                          uesio.styleTokens:
-                            root: []
               uesio.styleTokens:
                 root:
                   - p-8
