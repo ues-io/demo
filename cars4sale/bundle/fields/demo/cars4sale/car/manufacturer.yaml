@@ -1,0 +1,5 @@
+name: manufacturer
+label: Manufacturer
+type: REFERENCE
+reference:
+  collection: make

@@ -10,13 +10,15 @@ definition:
         demo/cars4sale.fuel_type:
         demo/cars4sale.is_new:
         demo/cars4sale.make:
+        demo/cars4sale.manufacturer:
+        demo/cars4sale.image:
         demo/cars4sale.mileage:
         demo/cars4sale.model:
         demo/cars4sale.price:
         demo/cars4sale.status:
         demo/cars4sale.transmission:
-        demo/cars4sale.year: # Components determine the layout and composition of your view
-        demo/cars4sale.image: {}
+        demo/cars4sale.year:
+  # Components determine the layout and composition of your view
   components:
     - uesio/io.viewlayout:
         left:
@@ -94,13 +96,14 @@ definition:
                       - field: demo/cars4sale.fuel_type
                       - field: demo/cars4sale.is_new
                       - field: demo/cars4sale.make
+                      - field: demo/cars4sale.manufacturer
+                      - field: demo/cars4sale.image
                       - field: demo/cars4sale.mileage
                       - field: demo/cars4sale.model
                       - field: demo/cars4sale.price
                       - field: demo/cars4sale.status
                       - field: demo/cars4sale.transmission
                       - field: demo/cars4sale.year
-                      - field: demo/cars4sale.image
                     uesio.id: carTable
                     mode: READ
                     wire: car

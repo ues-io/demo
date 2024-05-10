@@ -1,3 +1,4 @@
 name: transmission
 label: Transmission
-type: TEXT
+type: SELECT
+selectList: drive
