@@ -178,6 +178,9 @@ definition:
                     loading: lazy
                     file: demo/cars4sale.logo
                     height: 90
+                    signals:
+                      - signal: route/NAVIGATE_TO_ROUTE
+                        route: demo/cars4sale.carlist
               left: []
               center:
                 - uesio/io.grid:
