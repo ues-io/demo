@@ -1,0 +1,13 @@
+name: color
+options:
+  - label: Silver
+    value: Silver
+  - label: White
+    value: White
+  - label: Blue
+    value: Blue
+  - label: Black
+    value: Black
+  - label: Red
+    value: Red
+blank_option_label: None Selected
