@@ -246,15 +246,6 @@ definition:
                             - signal: wire/LOAD
                               wires:
                                 - carlist
-                      - uesio/io.text:
-                          text: Private Sellers
-                          element: div
-                          align: left
-                          color: red
-                          uesio.styleTokens:
-                            root:
-                              - pl-8
-                              - hover:text-white
                     uesio.variant: uesio/io.four_columns
                     uesio.styleTokens:
                       root:
