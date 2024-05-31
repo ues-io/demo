@@ -170,7 +170,10 @@ interface BeforeSaveBotApi {
 	load: (loadRequest: LoadRequest) => Record<string, FieldValue>[]
 	save: (
 		collectionName: string,
-		records: WireRecord[]
+		records: WireRecord[],
+		options?: {
+			upsert?: boolean
+		}
 	) => Record<string, FieldValue>[]
 	delete: (collectionName: string, records: WireRecord[]) => void
 	deletes: DeletesApi
@@ -189,7 +192,10 @@ interface AsAdminApi {
 	delete: (collectionName: string, records: WireRecord[]) => void
 	save: (
 		collectionName: string,
-		records: WireRecord[]
+		records: WireRecord[],
+		options?: {
+			upsert?: boolean
+		}
 	) => Record<string, FieldValue>[]
 	runIntegrationAction: RunIntegrationAction
 	callBot: CallBot
@@ -202,7 +208,10 @@ interface ListenerBotApi {
 	delete: (collectionName: string, records: WireRecord[]) => void
 	save: (
 		collectionName: string,
-		records: WireRecord[]
+		records: WireRecord[],
+		options?: {
+			upsert?: boolean
+		}
 	) => Record<string, FieldValue>[]
 	runIntegrationAction: RunIntegrationAction
 	callBot: CallBot
@@ -215,6 +224,19 @@ interface ListenerBotApi {
 	getNamespace: () => string
 	// Returns the name of the Bot, e.g "add_numbers"
 	getName: () => string
+	copyFile: (
+		sourceFileKey: string,
+		sourcePath: string,
+		destCollection: string,
+		destRecord: string,
+		destField: string
+	) => void
+	copyUserFile: (
+		sourceFileId: string,
+		destCollection: string,
+		destRecord: string,
+		destField: string
+	) => void
 	log: LogApi
 	http: HttpApi
 }
@@ -233,7 +255,10 @@ interface RunActionBotApi {
 	params: BotParamsApi
 	save: (
 		collectionName: string,
-		records: WireRecord[]
+		records: WireRecord[],
+		options?: {
+			upsert?: boolean
+		}
 	) => Record<string, FieldValue>[]
 	callBot: CallBot
 }
@@ -507,7 +532,10 @@ interface RouteBotApi {
 	// Insert/update collection records
 	save: (
 		collectionName: string,
-		records: WireRecord[]
+		records: WireRecord[],
+		options?: {
+			upsert?: boolean
+		}
 	) => Record<string, FieldValue>[]
 	// Run a specific integration action
 	runIntegrationAction: RunIntegrationAction
@@ -536,9 +564,34 @@ interface RouteBotApi {
 	 */
 	callBot: CallBot
 }
+
+type PlainWireRecord = {
+	[key: string]: FieldValue
+}
+
+type SaveError = {
+	recordid?: string
+	fieldid?: string
+	message: string
+}
+
+type SaveResponse = {
+	wire: string
+	errors: null | SaveError[]
+	changes: ChangeResults
+	deletes: ChangeResults
+}
+
+type ChangeResults = Record<string, PlainWireRecord>
+
+type SaveResponseBatch = {
+	wires: SaveResponse[]
+}
+
 export type {
 	AfterSaveBotApi,
 	BeforeSaveBotApi,
+	BotHttpResponse,
 	BotParamsApi,
 	ChangeApi,
 	ConditionOperator,
@@ -556,10 +609,12 @@ export type {
 	LoadOrder,
 	LoadRequest,
 	LoadRequestMetadata,
+	PlainWireRecord,
 	ReadableStringMap,
 	RouteBotApi,
 	RunActionBotApi,
 	SaveBotApi,
+	SaveResponseBatch,
 	SessionApi,
 	StatusCode,
 	WorkspaceApi,
