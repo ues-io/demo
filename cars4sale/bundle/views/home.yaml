@@ -57,6 +57,8 @@ definition:
                                           - align-middle
                                           - hover:scale-125
                                           - max-h-36
+                                          - hover:shadow
+                                          - rounded-lg
                                 uesio.variant: uesio/io.center
                       - uesio/io.box:
                           components:
@@ -168,7 +170,7 @@ definition:
                     uesio.styleTokens:
                       root:
                         - p-1
-                        - bg-blue-700
+                        - bg-blue-600
               uesio.styleTokens:
                 root: []
           - uesio/io.viewheader:
@@ -352,6 +354,9 @@ definition:
               uesio.styleTokens:
                 root:
                   - p-8
+        uesio.styleTokens:
+          root:
+            - bg-blue-50
   panels:
     more_info:
       uesio.type: uesio/io.dialog

@@ -38,7 +38,7 @@ definition:
               - uesio/io.navsection:
                   title: Collections
                   content:
-                    - uesio/io.sitenav:
+                    - uesio/appkit.sitenav:
       content:
         - uesio/core.slot:
             name: extra
