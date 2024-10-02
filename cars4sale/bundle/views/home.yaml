@@ -211,27 +211,6 @@ definition:
                               wires:
                                 - carlist
                       - uesio/io.button:
-                          text: Used Cars
-                          icon: ""
-                          uesio.variant: uesio/io.default
-                          iconPlacement: start
-                          uesio.styleTokens:
-                            root:
-                              - text-red-500
-                              - text-xl
-                              - hover:scale-110
-                              - hover:text-white
-                          signals:
-                            - signal: wire/RESET
-                              wire: carlist
-                            - signal: wire/SET_CONDITION_VALUE
-                              wire: carlist
-                              conditionId: isnew
-                              value: "false"
-                            - signal: wire/LOAD
-                              wires:
-                                - carlist
-                      - uesio/io.button:
                           text: Any Cars
                           icon: ""
                           uesio.variant: uesio/io.default
