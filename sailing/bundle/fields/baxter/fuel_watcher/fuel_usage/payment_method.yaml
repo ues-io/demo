@@ -1,0 +1,3 @@
+name: payment_method
+label: Payment method
+type: TEXT

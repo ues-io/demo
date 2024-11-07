@@ -1,0 +1,5 @@
+name: total_time
+label: Total Time
+type: TEXT
+number:
+  decimals: 2

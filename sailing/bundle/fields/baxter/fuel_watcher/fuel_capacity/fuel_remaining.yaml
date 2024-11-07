@@ -1,0 +1,5 @@
+name: fuel_remaining
+label: Fuel Remaning
+type: NUMBER
+number:
+  decimals: 2

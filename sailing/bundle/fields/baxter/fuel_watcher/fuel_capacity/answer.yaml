@@ -1,0 +1,6 @@
+name: answer
+label: answer
+type: FORMULA
+formula:
+  expression: baxter/fuel_watcher.tank_capacity_liters - baxter/fuel_watcher.range_km
+  returntype: NUMBER

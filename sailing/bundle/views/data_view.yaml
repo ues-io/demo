@@ -1,0 +1,269 @@
+name: data_view
+definition:
+  # Wires connect to data in collections
+  wires:
+    fuel_capacity:
+      collection: baxter/fuel_watcher.fuel_capacity
+      fields:
+        baxter/fuel_watcher.fuel_type:
+        baxter/fuel_watcher.notes:
+        baxter/fuel_watcher.range_km:
+        baxter/fuel_watcher.tank_capacity_liters: # Components determine the layout and composition of your view
+        baxter/fuel_watcher.answer: {}
+        baxter/fuel_watcher.fuel_consumption: {}
+        baxter/fuel_watcher.fuel_remaining: {}
+    fuel_usage:
+      fields:
+        baxter/fuel_watcher.cost_per_unit: {}
+        baxter/fuel_watcher.date: {}
+        baxter/fuel_watcher.fuel_amount: {}
+        baxter/fuel_watcher.notes: {}
+        baxter/fuel_watcher.payment_method: {}
+        baxter/fuel_watcher.station_location: {}
+        baxter/fuel_watcher.station_name: {}
+        baxter/fuel_watcher.total_cost: {}
+        baxter/fuel_watcher.total_time: null
+      collection: baxter/fuel_watcher.fuel_usage
+      batchsize: 200
+      init:
+        query: true
+        create: false
+    travel_log:
+      fields:
+        baxter/fuel_watcher.destination: {}
+        baxter/fuel_watcher.notes: {}
+        baxter/fuel_watcher.purpose_of_travel: {}
+        baxter/fuel_watcher.travel_cost: {}
+        baxter/fuel_watcher.travel_end_date: {}
+        baxter/fuel_watcher.travel_start_date: {}
+        baxter/fuel_watcher.traveler_email: {}
+        baxter/fuel_watcher.traveler_name: {}
+        baxter/fuel_watcher.total_time: {}
+      collection: baxter/fuel_watcher.travel_log
+      batchsize: 200
+      init:
+        query: true
+        create: false
+  components:
+    - uesio/io.viewlayout:
+        left:
+          - baxter/fuel_watcher.nav:
+        content:
+          - uesio/io.titlebar:
+              title: $Collection{fuel_capacity:pluralLabel}
+              subtitle: List View
+              uesio.variant: uesio/io.main
+              actions:
+                - uesio/io.group:
+                    components:
+                      - uesio/io.button:
+                          signals:
+                            - signal: wire/CREATE_RECORD
+                              wire: fuel_capacity
+                              prepend: true
+                            - signal: component/CALL
+                              component: uesio/io.table
+                              componentsignal: SET_EDIT_MODE
+                              targettype: specific
+                              componentid: fuel_capacityTable
+                          text: $Label{uesio/io.create}
+                          uesio.variant: uesio/io.primary
+                      - uesio/io.button:
+                          signals:
+                            - signal: wire/SAVE
+                              wires:
+                                - fuel_capacity
+                                - fuel_usage
+                                - travel_log
+                            - signal: wire/LOAD
+                              wires:
+                                - fuel_usage
+                          text: $Label{uesio/io.save}
+                          hotkey: "meta+s"
+                          uesio.variant: uesio/io.secondary
+                          uesio.display: []
+                      - uesio/io.button:
+                          signals:
+                            - signal: wire/SAVE
+                              wires:
+                                - fuel_capacity
+                                - fuel_usage
+                                - travel_log
+                            - signal: wire/LOAD
+                              wires:
+                                - fuel_usage
+                          text: $Label{uesio/io.save}
+                          hotkey: "meta+s"
+                          uesio.variant: uesio/io.destructive
+                          uesio.display: []
+                      - uesio/io.button:
+                          signals:
+                            - signal: wire/CANCEL
+                              wire: fuel_capacity
+                            - signal: wire/CANCEL
+                              wire: fuel_usage
+                            - signal: wire/CANCEL
+                              wire: travel_log
+                          uesio.display: []
+                          text: $Label{uesio/io.cancel}
+                          uesio.variant: uesio/io.secondary
+                      - uesio/io.button:
+                          signals:
+                            - signal: component/CALL
+                              component: uesio/io.table
+                              componentsignal: TOGGLE_MODE
+                              targettype: specific
+                              componentid: fuel_capacityTable
+                          text: Mode
+                          uesio.variant: uesio/io.secondary
+          - uesio/io.box:
+              uesio.variant: uesio/io.section
+              components:
+                - uesio/io.box:
+                    components:
+                      - uesio/io.button:
+                          text: Record Travel
+                          icon: bolt
+                          uesio.variant: uesio/io.primary
+                          iconPlacement: start
+                          signals:
+                            - signal: wire/CREATE_RECORD
+                              wire: travel_log
+                              prepend: true
+                            - signal: component/CALL
+                              component: uesio/io.table
+                              componentsignal: TOGGLE_MODE
+                              targettype: specific
+                              componentid: travel_log_table
+                      - uesio/io.button:
+                          text: Refuel
+                          icon: bolt
+                          uesio.variant: uesio/io.primary
+                          iconPlacement: start
+                          signals:
+                            - signal: wire/UPDATE_FIELDS
+                              wire: fuel_capacity
+                              fields:
+                                - field: baxter/fuel_watcher.notes
+                                  value: ${travel_log:baxter/fuel_watcher.notes} hello
+                    uesio.styleTokens:
+                      root:
+                        - p-4
+                - uesio/io.text:
+                    text: Fuel Capacity
+                    element: div
+                    align: left
+                - uesio/io.table:
+                    rowactions:
+                      - icon: visibility
+                        text: View
+                        uesio.display:
+                          - type: recordIsNotNew
+                        signals:
+                          - signal: route/NAVIGATE_TO_ASSIGNMENT
+                            viewtype: detail
+                            recordid: ${uesio/core.id}
+                            collection: baxter/fuel_watcher.fuel_capacity
+                      - icon: delete
+                        text: $Label{uesio/io.delete}
+                        signals:
+                          - signal: wire/TOGGLE_DELETE_STATUS
+                    columns:
+                      - field: baxter/fuel_watcher.fuel_remaining
+                      - field: baxter/fuel_watcher.fuel_type
+                      - field: baxter/fuel_watcher.notes
+                      - field: baxter/fuel_watcher.range_km
+                      - field: baxter/fuel_watcher.tank_capacity_liters
+                      - field: baxter/fuel_watcher.answer
+                      - field: baxter/fuel_watcher.fuel_consumption
+                    uesio.id: fuel_capacityTable
+                    mode: READ
+                    wire: fuel_capacity
+                    pagesize: 10
+          - uesio/io.box:
+              uesio.variant: uesio/io.section
+              components:
+                - uesio/io.button:
+                    text: Create
+                    icon: bolt
+                    uesio.variant: uesio/io.default
+                    iconPlacement: start
+                    signals:
+                      - signal: wire/CREATE_RECORD
+                        wire: fuel_usage
+                - uesio/io.text:
+                    text: Fuel Usage
+                    element: div
+                    align: left
+                - uesio/io.table:
+                    rowactions:
+                      - icon: visibility
+                        text: View
+                        uesio.display:
+                          - type: recordIsNotNew
+                        signals:
+                          - signal: route/NAVIGATE_TO_ASSIGNMENT
+                            viewtype: detail
+                            recordid: ${uesio/core.id}
+                            collection: baxter/fuel_watcher.fuel_capacity
+                      - icon: delete
+                        text: $Label{uesio/io.delete}
+                        signals:
+                          - signal: wire/TOGGLE_DELETE_STATUS
+                    columns:
+                      - field: baxter/fuel_watcher.cost_per_unit
+                      - field: baxter/fuel_watcher.date
+                      - field: baxter/fuel_watcher.fuel_amount
+                      - field: baxter/fuel_watcher.notes
+                      - field: baxter/fuel_watcher.payment_method
+                      - field: baxter/fuel_watcher.station_location
+                      - field: baxter/fuel_watcher.station_name
+                      - field: baxter/fuel_watcher.total_cost
+                      - field: baxter/fuel_watcher.total_time
+                    uesio.id: fuel_capacityTable
+                    mode: READ
+                    wire: fuel_usage
+                    pagesize: 10
+          - uesio/io.box:
+              uesio.variant: uesio/io.section
+              components:
+                - uesio/io.button:
+                    text: Create
+                    icon: bolt
+                    uesio.variant: uesio/io.default
+                    iconPlacement: start
+                    signals:
+                      - signal: wire/CREATE_RECORD
+                        wire: travel_log
+                - uesio/io.text:
+                    text: Travel Log
+                    element: div
+                    align: left
+                - uesio/io.table:
+                    rowactions:
+                      - icon: visibility
+                        text: View
+                        uesio.display:
+                          - type: recordIsNotNew
+                        signals:
+                          - signal: route/NAVIGATE_TO_ASSIGNMENT
+                            viewtype: detail
+                            recordid: ${uesio/core.id}
+                            collection: baxter/fuel_watcher.fuel_capacity
+                      - icon: delete
+                        text: $Label{uesio/io.delete}
+                        signals:
+                          - signal: wire/TOGGLE_DELETE_STATUS
+                    columns:
+                      - field: baxter/fuel_watcher.destination
+                      - field: baxter/fuel_watcher.notes
+                      - field: baxter/fuel_watcher.purpose_of_travel
+                      - field: baxter/fuel_watcher.travel_cost
+                      - field: baxter/fuel_watcher.travel_start_date
+                      - field: baxter/fuel_watcher.travel_end_date
+                      - field: baxter/fuel_watcher.traveler_name
+                      - field: baxter/fuel_watcher.total_time
+                    uesio.id: travel_log_table
+                    mode: READ
+                    wire: travel_log
+                    pagesize: 10

@@ -1,0 +1,5 @@
+name: add_hours
+public: true
+collection: travel_log
+type: AFTERSAVE
+dialect: TYPESCRIPT
