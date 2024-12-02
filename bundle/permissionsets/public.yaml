@@ -1,0 +1,17 @@
+name: public
+named: {}
+views: {}
+collections: {}
+routes:
+  marketplace/zefix_connector.login: true
+files: {}
+bots: {}
+integrationActions: {}
+allowallbots: false
+allowallcollections: false
+allowallviews: false
+allowallroutes: false
+allowallfiles: false
+allowallintegrationactions: false
+modifyallrecords: false
+viewallrecords: false

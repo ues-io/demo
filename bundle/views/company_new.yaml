@@ -1,0 +1,72 @@
+name: company_new
+definition:
+  # Wires connect to data in collections
+  wires:
+    company:
+      collection: marketplace/zefix_connector.company
+      fields:
+        marketplace/zefix_connector.canton:
+        marketplace/zefix_connector.cantonalexcerptweb:
+        marketplace/zefix_connector.capitalnominal:
+        marketplace/zefix_connector.legalseat:
+        marketplace/zefix_connector.name:
+        marketplace/zefix_connector.purpose:
+        marketplace/zefix_connector.status:
+        marketplace/zefix_connector.uidnumber:
+        uesio/core.updatedby:
+        uesio/core.updatedat:
+        uesio/core.createdby:
+        uesio/core.createdat:
+        uesio/core.owner:
+      init:
+        create: true
+        query: false
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        uesio.variant: marketplace/zefix_connector.default
+        left:
+          - uesio/core.view:
+              view: marketplace/zefix_connector.leftnav
+              slots:
+                crumbs:
+                  - uesio/io.group:
+                      uesio.variant: uesio/appkit.breadcrumbs
+                      components:
+                        - uesio/appkit.icontile:
+                            tileVariant: uesio/appkit.breadcrumb
+                            title: $Collection{company:pluralLabel}
+                            icon: $Collection{company:icon}
+                            signals:
+                              - signal: route/NAVIGATE_TO_ASSIGNMENT
+                                collection: marketplace/zefix_connector.company
+                                viewtype: list
+                        - uesio/appkit.icontile:
+                            tileVariant: uesio/appkit.breadcrumb
+                            title: New
+        content:
+          - uesio/appkit.layout_detail_split:
+              main:
+                - uesio/appkit.form_new:
+                    wire: company
+                    content:
+                      - uesio/io.box:
+                          uesio.variant: uesio/appkit.primarysection
+                          components:
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.canton
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.cantonalexcerptweb
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.capitalnominal
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.legalseat
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.name
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.purpose
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.status
+                            - uesio/io.field:
+                                fieldId: marketplace/zefix_connector.uidnumber
+              left:

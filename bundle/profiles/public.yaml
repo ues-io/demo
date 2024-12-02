@@ -1,0 +1,6 @@
+name: public
+label: Public Profile
+permissionSets:
+  - marketplace/zefix_connector.public
+  - uesio/appkit.public
+  - uesio/core.public

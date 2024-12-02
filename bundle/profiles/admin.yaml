@@ -1,0 +1,7 @@
+name: admin
+label: Admin Profile
+permissionSets:
+  - marketplace/zefix_connector.admin
+  - marketplace/zefix_connector.public
+  - uesio/appkit.public
+  - uesio/core.public

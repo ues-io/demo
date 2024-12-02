@@ -1,0 +1,11 @@
+name: marketplace/zefix_connector
+loginRoute: marketplace/zefix_connector.login
+homeRoute: marketplace/zefix_connector.home
+publicProfile: marketplace/zefix_connector.public
+dependencies:
+  uesio/appkit:
+    version: v0.0.1
+  uesio/core:
+    version: v0.0.1
+  uesio/io:
+    version: v0.0.1
