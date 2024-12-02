@@ -3,32 +3,60 @@ definition:
   # Wires connect to data in collections
   wires:
     company:
-      collection: marketplace/zefix_connector.company
+      collection: demo/zefix.company
       fields:
-        marketplace/zefix_connector.canton:
-        marketplace/zefix_connector.cantonalexcerptweb:
-        marketplace/zefix_connector.capitalnominal:
-        marketplace/zefix_connector.legalseat:
-        marketplace/zefix_connector.name:
-        marketplace/zefix_connector.purpose:
-        marketplace/zefix_connector.status:
-        marketplace/zefix_connector.uidnumber:
+        demo/zefix.name:
+        demo/zefix.canton:
         uesio/core.updatedby:
         uesio/core.updatedat:
         uesio/core.createdby:
         uesio/core.createdat:
         uesio/core.owner:
+        demo/zefix.legalseat: {}
+        demo/zefix.status: {}
+        demo/zefix.purpose: {}
+        demo/zefix.capitalnominal: {}
+        demo/zefix.cantonalexcerptweb: {}
+        demo/zefix.uid: {}
       conditions:
         - field: uesio/core.id
           valueSource: PARAM
           param: recordid
+    inputs:
+      viewOnly: true
+      fields:
+        input:
+          type: TEXT
+        output:
+          type: LONGTEXT
+          label: output
+      init:
+        query: false
+        create: true
+    approved:
+      fields:
+        demo/zefix.canton: {}
+        demo/zefix.cantonalexcerptweb: {}
+        demo/zefix.capitalnominal: {}
+        demo/zefix.legalseat: {}
+        demo/zefix.name: {}
+        demo/zefix.purpose: {}
+        demo/zefix.status: {}
+        demo/zefix.uid: {}
+        demo/zefix.comment: {}
+        demo/zefix.application: {}
+      collection: demo/zefix.approved
+      batchsize: 200
+      init:
+        query: true
+        create: false
   # Components determine the layout and composition of your view
   components:
     - uesio/io.viewlayout:
-        uesio.variant: marketplace/zefix_connector.default
+        uesio.variant: demo/zefix.default
         left:
           - uesio/core.view:
-              view: marketplace/zefix_connector.leftnav
+              view: demo/zefix.leftnav
               slots:
                 crumbs:
                   - uesio/io.group:
@@ -40,7 +68,7 @@ definition:
                             icon: $Collection{company:icon}
                             signals:
                               - signal: route/NAVIGATE_TO_ASSIGNMENT
-                                collection: marketplace/zefix_connector.company
+                                collection: demo/zefix.company
                                 viewtype: list
                         - uesio/appkit.icontile:
                             tileVariant: uesio/appkit.breadcrumb
@@ -55,27 +83,137 @@ definition:
                     main:
                       - uesio/appkit.form_detail:
                           wire: company
+                          avataricon: domain
                           content:
                             - uesio/io.box:
                                 uesio.variant: uesio/appkit.primarysection
                                 components:
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.canton
+                                      fieldId: demo/zefix.uid
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.cantonalexcerptweb
+                                      fieldId: demo/zefix.name
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.capitalnominal
+                                      fieldId: demo/zefix.canton
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.legalseat
+                                      fieldId: demo/zefix.legalseat
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.name
+                                      fieldId: demo/zefix.capitalnominal
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.purpose
+                                      fieldId: demo/zefix.status
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.status
+                                      fieldId: demo/zefix.purpose
                                   - uesio/io.field:
-                                      fieldId: marketplace/zefix_connector.uidnumber
+                                      fieldId: demo/zefix.cantonalexcerptweb
+                          actions: []
                     left:
+                      - uesio/io.box:
+                          components:
+                            - uesio/io.list:
+                                mode: EDIT
+                                wire: inputs
+                                uesio.id: inputList
+                                components:
+                                  - uesio/io.field:
+                                      fieldId: input
+                                      label: Ask
+                                      labelPosition: none
+                                      placeholder: Ask Claude AI
+                                      uesio.variant: uesio/io.default
+                                      uesio.styleTokens:
+                                        input: []
+                                  - uesio/io.button:
+                                      text: Search
+                                      icon: cell_tower
+                                      uesio.variant: uesio/appkit.primary
+                                      iconPlacement: end
+                                      signals:
+                                        - signal: integration/RUN_ACTION
+                                          stepId: ask
+                                          integrationType: uesio/aikit.bedrock
+                                          integration: uesio/aikit.bedrock
+                                          action: uesio/aikit.invokemodel
+                                          params:
+                                            model: anthropic.claude-3-haiku-20240307-v1:0
+                                            input: "${inputs:input} the company name is: ${company:name} the status is: ${company:status} the purpose of this company is: ${company:purpose} the cantonal excerpt web is ${company:cantonalexcerptweb}"
+                                            temperature: null
+                                            top_k: null
+                                            top_p: null
+                                            max_tokens_to_sample: null
+                                        - signal: wire/UPDATE_FIELDS
+                                          wire: inputs
+                                          fields:
+                                            - field: output
+                                              value: |-
+                                                You asked: ${inputs:input}
+
+                                                $SignalOutput{[ask][0.text]}
+                                            - field: input
+                                      uesio.styleTokens:
+                                        root:
+                                          - bg-green-500
+                                  - uesio/io.field:
+                                      fieldId: output
+                                      label: Results
+                                      labelPosition: top
+                                      placeholder: ""
+                                      longtext:
+                                        rows: 20
+                                      uesio.variant: uesio/io.default
+                            - uesio/io.button:
+                                text: Process
+                                icon: arrow_forward_ios
+                                uesio.variant: uesio/appkit.primary
+                                iconPlacement: end
+                                signals:
+                                  - signal: wire/CREATE_RECORD
+                                    wire: approved
+                                  - signal: wire/UPDATE_FIELDS
+                                    wire: approved
+                                    fields:
+                                      - field: demo/zefix.name
+                                        value: ${company:name}
+                                      - field: demo/zefix.comment
+                                        value: ${inputs:output}
+                                      - field: demo/zefix.canton
+                                        value: ${company:canton}
+                                      - field: demo/zefix.cantonalexcerptweb
+                                        value: ${company:cantonalexcerptweb}
+                                      - field: demo/zefix.capitalnominal
+                                        value: ${company:capitalnominal}
+                                      - field: demo/zefix.legalseat
+                                        value: ${company:legalseat}
+                                      - field: demo/zefix.purpose
+                                        value: ${company:purpose}
+                                      - field: demo/zefix.status
+                                        value: ${company:status}
+                                      - field: demo/zefix.uid
+                                        value: ${company:uid}
+                                      - field: demo/zefix.application
+                                        value: "Credit Application: \n\n1. Is this for business credit: YES\n2. Do you have a current bank account: YES\n3. Is the loan application for expansion or bridging finance: EXPANSION\n4. Is the finance for use in Switzerland or abroad: SWITZERLAND\n\n\nDOCUMENT STATS:\na. The applicant has signed the application for finance.\nb. The applicant signature has been verified.\n\n\\ \n"
+                                  - signal: wire/SAVE
+                                    wires:
+                                      - approved
+                                  - signal: route/NAVIGATE_TO_ROUTE
+                                    route: demo/zefix.approved_list
+                                uesio.styleTokens:
+                                  icon: []
+                                  root:
+                                    - bg-green-400
+                                uesio.display:
+                                  - type: fieldValue
+                                    operator: NOT_IN
+                                    wire: inputs
+                                    field: output
+                                    values:
+                                      - ""
+                          uesio.styleTokens:
+                            root:
+                              - pt-6
+                              - border
+                              - pl-6
+                              - pr-6
+                              - bg-blue-50
+                              - shadow-lg
           - uesio/io.box:
               uesio.variant: uesio/io.section
               uesio.display:
@@ -84,8 +222,12 @@ definition:
               components:
                 - uesio/io.text:
                     text: Select a record
+        right: []
+        header:
+          - uesio/core.view:
+              view: demo/zefix.header
   params:
     recordid:
       type: RECORD
       required: true
-      collection: marketplace/zefix_connector.company
+      collection: demo/zefix.company

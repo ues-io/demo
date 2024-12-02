@@ -1,0 +1,190 @@
+name: approved_detail
+definition:
+  # Wires connect to data in collections
+  wires:
+    approved:
+      collection: demo/zefix.approved
+      fields:
+        demo/zefix.canton:
+        demo/zefix.cantonalexcerptweb:
+        demo/zefix.capitalnominal:
+        demo/zefix.comment:
+        demo/zefix.legalseat:
+        demo/zefix.name:
+        demo/zefix.purpose:
+        demo/zefix.status:
+        demo/zefix.uid:
+        uesio/core.updatedby:
+        uesio/core.updatedat:
+        uesio/core.createdby:
+        uesio/core.createdat:
+        uesio/core.owner:
+        demo/zefix.application: {}
+      conditions:
+        - field: uesio/core.id
+          valueSource: PARAM
+          param: recordid
+    inputs:
+      viewOnly: true
+      fields:
+        input:
+          type: TEXT
+        output:
+          type: LONGTEXT
+          label: output
+      init:
+        query: false
+        create: true
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewlayout:
+        uesio.variant: demo/zefix.default
+        left:
+          - uesio/core.view:
+              view: demo/zefix.leftnav
+              slots:
+                crumbs:
+                  - uesio/io.group:
+                      uesio.variant: uesio/appkit.breadcrumbs
+                      components:
+                        - uesio/appkit.icontile:
+                            tileVariant: uesio/appkit.breadcrumb
+                            title: $Collection{approved:pluralLabel}
+                            icon: $Collection{approved:icon}
+                            signals:
+                              - signal: route/NAVIGATE_TO_ASSIGNMENT
+                                collection: demo/zefix.approved
+                                viewtype: list
+                        - uesio/appkit.icontile:
+                            tileVariant: uesio/appkit.breadcrumb
+                            title: $RecordMeta{approved:name}
+        content:
+          - uesio/io.box:
+              uesio.display:
+                - type: paramIsSet
+                  param: recordid
+              components:
+                - uesio/appkit.layout_detail_split:
+                    main:
+                      - uesio/appkit.form_detail:
+                          wire: approved
+                          content:
+                            - uesio/io.box:
+                                uesio.variant: uesio/appkit.primarysection
+                                components:
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.canton
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.cantonalexcerptweb
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.capitalnominal
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.comment
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.legalseat
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.name
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.purpose
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.status
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.uid
+                                  - uesio/io.field:
+                                      fieldId: demo/zefix.application
+                    left:
+                      - uesio/io.box:
+                          components:
+                            - uesio/io.list:
+                                mode: EDIT
+                                wire: inputs
+                                uesio.id: inputlist
+                                components:
+                                  - uesio/io.field:
+                                      fieldId: input
+                                      label: Ask
+                                      labelPosition: none
+                                      placeholder: Ask Cluade AI
+                                      uesio.variant: uesio/io.default
+                                  - uesio/io.button:
+                                      text: Search
+                                      icon: cell_tower
+                                      uesio.variant: uesio/sitekit.primary_dark
+                                      iconPlacement: end
+                                      signals:
+                                        - signal: integration/RUN_ACTION
+                                          stepId: ask
+                                          integrationType: uesio/aikit.bedrock
+                                          integration: uesio/aikit.bedrock
+                                          action: uesio/aikit.invokemodel
+                                          params:
+                                            model: anthropic.claude-3-haiku-20240307-v1:0
+                                            input: "${inputs:input} the company name is: ${approved:name} the status is: ${approved:status} the purpose of this company is: ${approved:purpose} the cantonal excerpt web is ${approved:cantonalexcerptweb} The application is ${approved:application}"
+                                        - signal: wire/UPDATE_FIELDS
+                                          wire: inputs
+                                          fields:
+                                            - field: output
+                                              value: |-
+                                                You asked: ${inputs:input}
+
+                                                $SignalOutput{[ask][0.text]}
+                                            - field: input
+                                  - uesio/io.field:
+                                      fieldId: output
+                                      label: Results
+                                      labelPosition: top
+                                      longtext:
+                                        rows: 20
+                                      uesio.styleTokens:
+                                        input:
+                                          - inset-8
+                                  - uesio/io.button:
+                                      text: Approve
+                                      icon: approval
+                                      uesio.variant: uesio/sitekit.primary_dark
+                                      iconPlacement: end
+                                      signals:
+                                        - signal: wire/UPDATE_FIELDS
+                                          wire: approved
+                                          fields:
+                                            - field: demo/zefix.status
+                                              value: APPROVED
+                                        - signal: wire/SAVE
+                                          wires:
+                                            - approved
+                                        - signal: notification/ADD
+                                          severity: success
+                                          text: Application Approved!
+                                          duration: "3"
+                                      uesio.display:
+                                        - type: fieldValue
+                                          operator: NOT_IN
+                                          wire: approved
+                                          field: demo/zefix.status
+                                          values:
+                                            - APPROVED
+                                emptyState: []
+                          uesio.styleTokens:
+                            root:
+                              - pt-6
+                              - border
+                              - pl-6
+                              - pr-6
+                              - bg-blue-50
+                              - shadow-lg
+          - uesio/io.box:
+              uesio.variant: uesio/io.section
+              uesio.display:
+                - type: paramIsNotSet
+                  param: recordid
+              components:
+                - uesio/io.text:
+                    text: Select a record
+        header:
+          - uesio/core.view:
+              view: demo/zefix.header
+  params:
+    recordid:
+      type: RECORD
+      required: true
+      collection: demo/zefix.approved

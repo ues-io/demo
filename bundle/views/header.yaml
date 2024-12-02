@@ -1,0 +1,44 @@
+name: header
+definition:
+  # Wires connect to data in collections
+  wires: {}
+  # Components determine the layout and composition of your view
+  components:
+    - uesio/io.viewheader:
+        uesio.variant: uesio/io.default
+        logo:
+          - uesio/io.grid:
+              uesio.variant: uesio/appkit.three_columns
+              items:
+                - uesio/io.box:
+                    components:
+                      - uesio/io.text:
+                          text: GenAI-Readiness in Banking
+                          element: div
+                          align: center
+                          color: ""
+                          uesio.styleTokens:
+                            root:
+                              - text-xl
+                              - -ml-7
+                    uesio.styleTokens:
+                      root:
+                        - pl-7
+                - uesio/io.text:
+                    text: "Presented by: Ansuya Ahluwalia, CTO, Thirty3"
+                    element: h1
+                    align: left
+                    color: black
+                    uesio.styleTokens:
+                      root:
+                        - pt-1
+                        - text-white
+                        - -ml-9
+                        - pl-2
+              uesio.styleTokens:
+                root:
+                  - pl-72
+        uesio.styleTokens:
+          content: []
+          root:
+            - bg-gray-100

@@ -1,0 +1,5 @@
+name: approved
+label: Approvals
+icon: check
+pluralLabel: Approvals
+nameField: name

@@ -1,0 +1,4 @@
+name: status
+label: Status
+type: SELECT
+selectList: status

@@ -1,7 +1,4 @@
 name: admin
-label: Admin Profile
+label: Admin User
 permissionSets:
-  - marketplace/zefix_connector.admin
-  - marketplace/zefix_connector.public
-  - uesio/appkit.public
-  - uesio/core.public
+  - demo/zefix.admin

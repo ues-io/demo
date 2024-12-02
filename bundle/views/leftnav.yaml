@@ -6,11 +6,12 @@ definition:
     - name: extra
   components:
     - uesio/appkit.sidebar:
+        scrollpanelVariant: demo/zefix.left
         header:
           - uesio/appkit.tile_app:
-              title: zefix_connector
-              icon: database
-              iconcolor: '#ca8a04'
+              title: zefix
+              icon: health_and_safety
+              iconcolor: '#d946ef'
           - $Slot{crumbs}
         content:
           - uesio/io.navsection:
@@ -26,15 +27,6 @@ definition:
                       - signal: route/NAVIGATE
                         path: home
                 - uesio/appkit.icontile:
-                    uesio.id: settings
-                    selectedid: $Param{selected}
-                    tileVariant: uesio/io.nav
-                    title: Settings
-                    icon: settings
-                    signals:
-                      - signal: route/NAVIGATE
-                        path: settings
-                - uesio/appkit.icontile:
                     uesio.id: users
                     selectedid: $Param{selected}
                     tileVariant: uesio/io.nav
@@ -46,7 +38,7 @@ definition:
                         collection: uesio/core.user
                         viewtype: list
           - uesio/appkit.sitenav:
-              title: Collections
+              title: verifications
               excludeCollections:
                 - uesio/core.user
           - $Slot{extra}

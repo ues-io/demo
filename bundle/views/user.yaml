@@ -2,10 +2,10 @@ name: user
 definition:
   components:
     - uesio/io.viewlayout:
-        uesio.variant: marketplace/zefix_connector.default
+        uesio.variant: demo/zefix.default
         left:
           - uesio/core.view:
-              view: marketplace/zefix_connector.leftnav
+              view: demo/zefix.leftnav
               params:
                 selected: users
               slots:

@@ -1,6 +1,5 @@
 name: public
-label: Public Profile
+label: Public User
 permissionSets:
-  - marketplace/zefix_connector.public
-  - uesio/appkit.public
+  - demo/zefix.public
   - uesio/core.public

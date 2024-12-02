@@ -1,11 +1,15 @@
-name: marketplace/zefix_connector
-loginRoute: marketplace/zefix_connector.login
-homeRoute: marketplace/zefix_connector.home
-publicProfile: marketplace/zefix_connector.public
+name: demo/zefix
+loginRoute: demo/zefix.login
+homeRoute: demo/zefix.home
+publicProfile: demo/zefix.public
 dependencies:
+  uesio/aikit:
+    version: v0.0.1
   uesio/appkit:
     version: v0.0.1
   uesio/core:
     version: v0.0.1
   uesio/io:
+    version: v0.0.1
+  uesio/sitekit:
     version: v0.0.1
